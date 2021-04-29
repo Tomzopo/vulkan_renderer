@@ -6,11 +6,15 @@ set(CMAKE_CXX_STANDARD 17)
 add_subdirectory(vendor/glfw)
 add_subdirectory(vendor/glm)
 
-add_executable(vulkan_tutorial src/main.cpp)
+add_executable(${PROJECT_NAME}
+        src/main.cpp
+        src/HelloTriangleApplication.cpp
+        )
 
 find_package(Vulkan REQUIRED)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
+        src/
         vendor/glfw/include
         )
 
