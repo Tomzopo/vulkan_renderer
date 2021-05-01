@@ -17,4 +17,5 @@ private:
     void mainLoop();
     void cleanup();
     void createInstance();
+    static void checkExtensions();
 };

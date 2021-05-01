@@ -1,6 +1,10 @@
 #include "HelloTriangleApplication.h"
 
+#include <iostream>
 #include <stdexcept>
+#include <vector>
+#include <unordered_set>
+#include <cassert>
 
 const int WIDTH = 1280;
 const int HEIGHT = 720;
@@ -32,6 +36,8 @@ void HelloTriangleApplication::mainLoop() {
 }
 
 void HelloTriangleApplication::cleanup() {
+    vkDestroyInstance(instance, nullptr);
+
     glfwDestroyWindow(window);
     glfwTerminate();
 }
@@ -50,7 +56,7 @@ void HelloTriangleApplication::createInstance() {
     createInfo.pApplicationInfo = &appInfo;
 
     uint32_t glfwExtensionCount = 0;
-    const char **glfwExtensions;
+    const char** glfwExtensions;
     glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
 
     createInfo.enabledExtensionCount = glfwExtensionCount;
@@ -60,5 +66,35 @@ void HelloTriangleApplication::createInstance() {
 
     if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS) {
         throw std::runtime_error("Failed to create vulkan instance!");
+    }
+
+    checkExtensions();
+}
+
+void HelloTriangleApplication::checkExtensions() {
+    uint32_t extensionCount = 0;
+    vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
+
+    std::vector<VkExtensionProperties> extensions(extensionCount);
+    vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions.data());
+
+    std::unordered_set<std::string> supportedExtensionList;
+    std::cout << extensionCount << " available extensions:\n";
+
+    for (const auto& extension : extensions) {
+        std::cout << "\t" << extension.extensionName << "\n";
+        supportedExtensionList.insert(extension.extensionName);
+    }
+
+    uint32_t glfwExtensionCount = 0;
+    auto glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
+
+    std::cout << "\n";
+
+    for (int i = 0; i < glfwExtensionCount; i++) {
+        if (!supportedExtensionList.count(glfwExtensions[i])) {
+            std::cout << "Unsupported extension: " << glfwExtensions[i];
+            assert(false);
+        }
     }
 }
