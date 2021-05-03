@@ -12,9 +12,10 @@ const bool enableValidationLayers = true;
 
 struct QueueFamilyIndices {
     std::optional<uint32_t> graphicsFamily;
+    std::optional<uint32_t> presentFamily;
 
     [[nodiscard]] bool isComplete() const {
-        return graphicsFamily.has_value();
+        return graphicsFamily.has_value() && presentFamily.has_value();
     }
 };
 
@@ -26,11 +27,16 @@ public:
 
 private:
     GLFWwindow* window = nullptr;
+
     VkInstance instance{};
     VkDebugUtilsMessengerEXT debugMessenger{};
+    VkSurfaceKHR surface{};
+
     VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
     VkDevice device{};
+
     VkQueue graphicsQueue{};
+    VkQueue presentQueue{};
 
 private:
     void initWindow();
@@ -38,17 +44,19 @@ private:
     void mainLoop();
     void cleanup();
     void createInstance();
+    void createSurface();
     void setupDebugMessenger();
     void pickPhysicalDevice();
     void createLogicalDevice();
+
+    QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
+    bool isDeviceSuitable(VkPhysicalDevice device);
 
     // static functions
     static void checkExtensions();
     static bool checkValidationLayerSupport();
     static std::vector<const char*> getRequiredExtensions();
     static void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
-    static bool isDeviceSuitable(VkPhysicalDevice device);
-    static QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
 
     static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
                                                         VkDebugUtilsMessageTypeFlagsEXT messageType,
