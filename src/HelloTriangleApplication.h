@@ -55,6 +55,7 @@ private:
     std::vector<VkImage> swapChainImages;
     VkFormat swapChainImageFormat{};
     VkExtent2D swapChainExtent{};
+    std::vector<VkImageView> swapChainImageViews;
 
 private:
     void initWindow();
@@ -65,6 +66,7 @@ private:
     void createSurface();
     void createLogicalDevice();
     void createSwapChain();
+    void createImageViews();
 
     void setupDebugMessenger();
 
@@ -92,4 +94,5 @@ private:
                                                         VkDebugUtilsMessageTypeFlagsEXT messageType,
                                                         const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
                                                         void* pUserData);
+
 };
