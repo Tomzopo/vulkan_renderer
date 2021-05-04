@@ -67,21 +67,22 @@ private:
     void createLogicalDevice();
     void createSwapChain();
     void createImageViews();
+    void createGraphicsPipeline();
 
     void setupDebugMessenger();
 
     void pickPhysicalDevice();
-
     void mainLoop();
+
     QueueFamilyIndices findQueueFamilies(VkPhysicalDevice dev);
 
     bool isDeviceSuitable(VkPhysicalDevice dev);
-
     SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice dev);
     VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
-    VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
 
+    VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
     VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
+
     // static functions
     static void checkExtensions();
 
@@ -90,9 +91,13 @@ private:
     static std::vector<const char*> getRequiredExtensions();
     static bool checkValidationLayerSupport();
     static void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
+
+    static std::vector<char> readFile(const std::string& filename);
+
     static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
                                                         VkDebugUtilsMessageTypeFlagsEXT messageType,
                                                         const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
                                                         void* pUserData);
 
+    VkShaderModule createShaderModule(const std::vector<char>& code);
 };
