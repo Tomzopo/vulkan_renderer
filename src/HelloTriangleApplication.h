@@ -61,6 +61,8 @@ private:
     VkPipelineLayout pipelineLayout{};
     VkPipeline graphicsPipeline{};
 
+    std::vector<VkFramebuffer> swapChainFramebuffers;
+
 private:
     void initWindow();
     void initVulkan();
@@ -71,8 +73,9 @@ private:
     void createLogicalDevice();
     void createSwapChain();
     void createImageViews();
-    void createGraphicsPipeline();
     void createRenderPass();
+    void createGraphicsPipeline();
+    void createFramebuffers();
 
     void setupDebugMessenger();
 
@@ -103,4 +106,5 @@ private:
                                                         VkDebugUtilsMessageTypeFlagsEXT messageType,
                                                         const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
                                                         void* pUserData);
+
 };
