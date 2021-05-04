@@ -47,26 +47,26 @@ private:
     VkSurfaceKHR surface{};
     VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
     VkDevice device{};
-
     VkQueue graphicsQueue{};
     VkQueue presentQueue{};
-
     VkSwapchainKHR swapChain{};
-    std::vector<VkImage> swapChainImages;
     VkFormat swapChainImageFormat{};
     VkExtent2D swapChainExtent{};
-    std::vector<VkImageView> swapChainImageViews;
-
     VkRenderPass renderPass{};
     VkPipelineLayout pipelineLayout{};
     VkPipeline graphicsPipeline{};
-
-    std::vector<VkFramebuffer> swapChainFramebuffers;
     VkCommandPool commandPool{};
-    std::vector<VkCommandBuffer> commandBuffers;
 
-    VkSemaphore imageAvailableSemaphore{};
-    VkSemaphore renderFinishedSemaphore{};
+    std::vector<VkImage> swapChainImages;
+    std::vector<VkImageView> swapChainImageViews;
+    std::vector<VkFramebuffer> swapChainFramebuffers;
+    std::vector<VkCommandBuffer> commandBuffers;
+    std::vector<VkSemaphore> imageAvailableSemaphores;
+    std::vector<VkSemaphore> renderFinishedSemaphores;
+    std::vector<VkFence> inFlightFences;
+    std::vector<VkFence> imagesInFlight;
+
+    size_t currentFrame = 0;
 
 private:
     void initWindow();
@@ -83,7 +83,7 @@ private:
     void createFramebuffers();
     void createCommandPool();
     void createCommandBuffers();
-    void createSemaphores();
+    void createSyncObjects();
 
     void setupDebugMessenger();
 
