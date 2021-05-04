@@ -62,7 +62,10 @@ private:
     VkPipeline graphicsPipeline{};
 
     std::vector<VkFramebuffer> swapChainFramebuffers;
+    VkCommandPool commandPool;
+    std::vector<VkCommandBuffer> commandBuffers;
 
+    
 private:
     void initWindow();
     void initVulkan();
@@ -76,12 +79,15 @@ private:
     void createRenderPass();
     void createGraphicsPipeline();
     void createFramebuffers();
+    void createCommandPool();
+    void createCommandBuffers();
 
     void setupDebugMessenger();
 
     void pickPhysicalDevice();
 
     void mainLoop();
+    void drawFrame();
 
     QueueFamilyIndices findQueueFamilies(VkPhysicalDevice dev);
     bool isDeviceSuitable(VkPhysicalDevice dev);
@@ -106,5 +112,6 @@ private:
                                                         VkDebugUtilsMessageTypeFlagsEXT messageType,
                                                         const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
                                                         void* pUserData);
+
 
 };
