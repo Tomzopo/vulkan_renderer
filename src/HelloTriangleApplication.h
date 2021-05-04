@@ -57,7 +57,8 @@ private:
     VkExtent2D swapChainExtent{};
     std::vector<VkImageView> swapChainImageViews;
 
-    VkPipelineLayout pipelineLayout;
+    VkRenderPass renderPass{};
+    VkPipelineLayout pipelineLayout{};
 
 private:
     void initWindow();
@@ -70,36 +71,35 @@ private:
     void createSwapChain();
     void createImageViews();
     void createGraphicsPipeline();
+    void createRenderPass();
 
     void setupDebugMessenger();
 
     void pickPhysicalDevice();
+
     void mainLoop();
 
     QueueFamilyIndices findQueueFamilies(VkPhysicalDevice dev);
-
     bool isDeviceSuitable(VkPhysicalDevice dev);
     SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice dev);
-    VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
 
+    VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
     VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
     VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
+    VkShaderModule createShaderModule(const std::vector<char>& code);
 
     // static functions
     static void checkExtensions();
-
     static bool checkDeviceExtensionSupport(VkPhysicalDevice dev);
-
     static std::vector<const char*> getRequiredExtensions();
+
     static bool checkValidationLayerSupport();
+
     static void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
 
     static std::vector<char> readFile(const std::string& filename);
-
     static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
                                                         VkDebugUtilsMessageTypeFlagsEXT messageType,
                                                         const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
                                                         void* pUserData);
-
-    VkShaderModule createShaderModule(const std::vector<char>& code);
 };
