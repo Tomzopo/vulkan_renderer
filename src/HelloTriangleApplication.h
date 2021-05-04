@@ -57,6 +57,8 @@ private:
     VkExtent2D swapChainExtent{};
     std::vector<VkImageView> swapChainImageViews;
 
+    VkPipelineLayout pipelineLayout;
+
 private:
     void initWindow();
     void initVulkan();
