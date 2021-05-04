@@ -62,10 +62,12 @@ private:
     VkPipeline graphicsPipeline{};
 
     std::vector<VkFramebuffer> swapChainFramebuffers;
-    VkCommandPool commandPool;
+    VkCommandPool commandPool{};
     std::vector<VkCommandBuffer> commandBuffers;
 
-    
+    VkSemaphore imageAvailableSemaphore{};
+    VkSemaphore renderFinishedSemaphore{};
+
 private:
     void initWindow();
     void initVulkan();
@@ -81,6 +83,7 @@ private:
     void createFramebuffers();
     void createCommandPool();
     void createCommandBuffers();
+    void createSemaphores();
 
     void setupDebugMessenger();
 
