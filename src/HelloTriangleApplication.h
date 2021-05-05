@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <vector>
 #include <optional>
+#include <string>
 
 #ifdef NDEBUG
 const bool enableValidationLayers = false;
