@@ -68,6 +68,7 @@ private:
     std::vector<VkFence> imagesInFlight;
 
     size_t currentFrame = 0;
+    bool framebufferResized = false;
 
 private:
     void initWindow();
@@ -85,6 +86,9 @@ private:
     void createCommandPool();
     void createCommandBuffers();
     void createSyncObjects();
+
+    void recreateSwapChain();
+    void cleanupSwapChain();
 
     void setupDebugMessenger();
 
@@ -109,6 +113,8 @@ private:
 
     static bool checkValidationLayerSupport();
 
+    static void framebufferResizeCallback(GLFWwindow* window, int width, int height);
+
     static void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
 
     static std::vector<char> readFile(const std::string& filename);
@@ -116,6 +122,5 @@ private:
                                                         VkDebugUtilsMessageTypeFlagsEXT messageType,
                                                         const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
                                                         void* pUserData);
-
 
 };
