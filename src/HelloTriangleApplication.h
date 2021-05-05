@@ -67,9 +67,14 @@ struct Vertex {
 };
 
 const std::vector<Vertex> vertices = {
-        {{0.0f,  -0.5f}, {1.0f, 1.0f, 1.0f}},
-        {{0.5f,  0.5f},  {0.0f, 1.0f, 0.0f}},
-        {{-0.5f, 0.5f},  {0.0f, 0.0f, 1.0f}}
+        {{-0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}},
+        {{0.5f,  -0.5f}, {0.0f, 1.0f, 0.0f}},
+        {{0.5f,  0.5f},  {0.0f, 0.0f, 1.0f}},
+        {{-0.5f, 0.5f},  {1.0f, 1.0f, 1.0f}}
+};
+
+const std::vector<uint16_t> indices = {
+        0, 1, 2, 2, 3, 0
 };
 
 class HelloTriangleApplication {
@@ -96,6 +101,8 @@ private:
     VkCommandPool commandPool{};
     VkBuffer vertexBuffer{};
     VkDeviceMemory vertexBufferMemory{};
+    VkBuffer indexBuffer{};
+    VkDeviceMemory indexBufferMemory{};
 
     std::vector<VkImage> swapChainImages;
     std::vector<VkImageView> swapChainImageViews;
@@ -125,8 +132,9 @@ private:
     void createCommandPool();
     void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer&
     buffer, VkDeviceMemory& bufferMemory);
-    void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
     void createVertexBuffer();
+    void createIndexBuffer();
+    void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
     void createCommandBuffers();
     void createSyncObjects();
 
