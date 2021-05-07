@@ -1,0 +1,10 @@
+#ifndef VULKAN_TUTORIAL_VULKAN_DEVICE_H
+#define VULKAN_TUTORIAL_VULKAN_DEVICE_H
+
+
+class VulkanDevice {
+
+};
+
+
+#endif //VULKAN_TUTORIAL_VULKAN_DEVICE_H
