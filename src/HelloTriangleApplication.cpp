@@ -75,6 +75,8 @@ void HelloTriangleApplication::initVulkan() {
     createVertexBuffer();
     createIndexBuffer();
     createUniformBuffers();
+    createDescriptorPool();
+    createDescriptorSets();
     createCommandBuffers();
     createSyncObjects();
 }
@@ -414,7 +416,7 @@ void HelloTriangleApplication::createGraphicsPipeline() {
     rasterizerState.polygonMode = VK_POLYGON_MODE_FILL;
     rasterizerState.lineWidth = 1.0f;
     rasterizerState.cullMode = VK_CULL_MODE_BACK_BIT;
-    rasterizerState.frontFace = VK_FRONT_FACE_CLOCKWISE;
+    rasterizerState.frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
     rasterizerState.depthBiasEnable = VK_FALSE;
     rasterizerState.depthBiasConstantFactor = 0.0f;
     rasterizerState.depthBiasClamp = 0.0f;
@@ -645,6 +647,56 @@ void HelloTriangleApplication::createUniformBuffers() {
     }
 }
 
+void HelloTriangleApplication::createDescriptorPool() {
+    VkDescriptorPoolSize poolSize{};
+    poolSize.type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+    poolSize.descriptorCount = static_cast<uint32_t>(swapChainImages.size());
+
+    VkDescriptorPoolCreateInfo poolCreateInfo{};
+    poolCreateInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+    poolCreateInfo.poolSizeCount = 1;
+    poolCreateInfo.pPoolSizes = &poolSize;
+    poolCreateInfo.maxSets = static_cast<uint32_t>(swapChainImages.size());
+
+    if (vkCreateDescriptorPool(device, &poolCreateInfo, nullptr, &descriptorPool) != VK_SUCCESS) {
+        throw std::runtime_error("Failed to create descriptor pool!");
+    }
+}
+
+void HelloTriangleApplication::createDescriptorSets() {
+    std::vector<VkDescriptorSetLayout> layouts(swapChainImages.size(), descriptorSetLayout);
+    VkDescriptorSetAllocateInfo allocateInfo{};
+    allocateInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+    allocateInfo.descriptorPool = descriptorPool;
+    allocateInfo.descriptorSetCount = static_cast<uint32_t>(swapChainImages.size());
+    allocateInfo.pSetLayouts = layouts.data();
+
+    descriptorSets.resize(swapChainImages.size());
+    if (vkAllocateDescriptorSets(device, &allocateInfo, descriptorSets.data()) != VK_SUCCESS) {
+        throw std::runtime_error("Failed to allocate descriptor sets!");
+    }
+
+    for (size_t i = 0; i < swapChainImages.size(); ++i) {
+        VkDescriptorBufferInfo bufferInfo{};
+        bufferInfo.buffer = uniformBuffers[i];
+        bufferInfo.offset = 0;
+        bufferInfo.range = sizeof(UniformBufferObject);
+
+        VkWriteDescriptorSet descriptorWrite{};
+        descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+        descriptorWrite.dstSet = descriptorSets[i];
+        descriptorWrite.dstBinding = 0;
+        descriptorWrite.dstArrayElement = 0;
+        descriptorWrite.descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+        descriptorWrite.descriptorCount = 1;
+        descriptorWrite.pBufferInfo = &bufferInfo;
+        descriptorWrite.pImageInfo = nullptr;
+        descriptorWrite.pTexelBufferView = nullptr;
+
+        vkUpdateDescriptorSets(device, 1, &descriptorWrite, 0, nullptr);
+    }
+}
+
 void HelloTriangleApplication::copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size) {
     VkCommandBufferAllocateInfo allocInfo{};
     allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
@@ -722,6 +774,8 @@ void HelloTriangleApplication::createCommandBuffers() {
 
         vkCmdBindIndexBuffer(commandBuffers[i], indexBuffer, 0, VK_INDEX_TYPE_UINT16);
 
+        vkCmdBindDescriptorSets(commandBuffers[i], VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0, 1,
+                                &descriptorSets[i], 0, nullptr);
         vkCmdDrawIndexed(commandBuffers[i], static_cast<uint32_t>(indices.size()), 1, 0, 0, 0);
 
         vkCmdEndRenderPass(commandBuffers[i]);
@@ -774,6 +828,8 @@ void HelloTriangleApplication::recreateSwapChain() {
     createGraphicsPipeline();
     createFramebuffers();
     createUniformBuffers();
+    createDescriptorPool();
+    createDescriptorSets();
     createCommandBuffers();
 }
 
@@ -798,6 +854,8 @@ void HelloTriangleApplication::cleanupSwapChain() {
         vkDestroyBuffer(device, uniformBuffers[i], nullptr);
         vkFreeMemory(device, uniformBuffersMemory[i], nullptr);
     }
+
+    vkDestroyDescriptorPool(device, descriptorPool, nullptr);
 }
 
 VkShaderModule HelloTriangleApplication::createShaderModule(const std::vector<char>& code) {

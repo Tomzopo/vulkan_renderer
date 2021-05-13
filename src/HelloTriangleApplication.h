@@ -111,10 +111,11 @@ private:
     VkDeviceMemory vertexBufferMemory{};
     VkBuffer indexBuffer{};
     VkDeviceMemory indexBufferMemory{};
+    VkDescriptorPool descriptorPool{};
 
+    std::vector<VkDescriptorSet> descriptorSets{};
     std::vector<VkBuffer> uniformBuffers;
     std::vector<VkDeviceMemory> uniformBuffersMemory;
-
     std::vector<VkImage> swapChainImages;
     std::vector<VkImageView> swapChainImageViews;
     std::vector<VkFramebuffer> swapChainFramebuffers;
@@ -147,6 +148,8 @@ private:
     void createVertexBuffer();
     void createIndexBuffer();
     void createUniformBuffers();
+    void createDescriptorPool();
+    void createDescriptorSets();
     void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
     void createCommandBuffers();
 
@@ -189,5 +192,6 @@ private:
                                                         VkDebugUtilsMessageTypeFlagsEXT messageType,
                                                         const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
                                                         void* pUserData);
+
 
 };
