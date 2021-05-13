@@ -2,6 +2,7 @@
 
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <vector>
 #include <optional>
 #include <string>
@@ -66,6 +67,12 @@ struct Vertex {
     }
 };
 
+struct UniformBufferObject {
+    glm::mat4 model;
+    glm::mat4 view;
+    glm::mat4 proj;
+};
+
 const std::vector<Vertex> vertices = {
         {{-0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}},
         {{0.5f,  -0.5f}, {0.0f, 1.0f, 0.0f}},
@@ -96,6 +103,7 @@ private:
     VkFormat swapChainImageFormat{};
     VkExtent2D swapChainExtent{};
     VkRenderPass renderPass{};
+    VkDescriptorSetLayout descriptorSetLayout{};
     VkPipelineLayout pipelineLayout{};
     VkPipeline graphicsPipeline{};
     VkCommandPool commandPool{};
@@ -103,6 +111,9 @@ private:
     VkDeviceMemory vertexBufferMemory{};
     VkBuffer indexBuffer{};
     VkDeviceMemory indexBufferMemory{};
+
+    std::vector<VkBuffer> uniformBuffers;
+    std::vector<VkDeviceMemory> uniformBuffersMemory;
 
     std::vector<VkImage> swapChainImages;
     std::vector<VkImageView> swapChainImageViews;
@@ -127,6 +138,7 @@ private:
     void createSwapChain();
     void createImageViews();
     void createRenderPass();
+    void createDescriptorSetLayout();
     void createGraphicsPipeline();
     void createFramebuffers();
     void createCommandPool();
@@ -134,32 +146,36 @@ private:
     buffer, VkDeviceMemory& bufferMemory);
     void createVertexBuffer();
     void createIndexBuffer();
+    void createUniformBuffers();
     void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
     void createCommandBuffers();
-    void createSyncObjects();
 
+    void createSyncObjects();
     void recreateSwapChain();
+
     void cleanupSwapChain();
 
     void setupDebugMessenger();
 
     void pickPhysicalDevice();
-
     void mainLoop();
+
+    void updateUniformBuffer(uint32_t currentImage);
     void drawFrame();
 
     QueueFamilyIndices findQueueFamilies(VkPhysicalDevice dev);
     bool isDeviceSuitable(VkPhysicalDevice dev);
-    SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice dev);
 
+    SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice dev);
     VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
     VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
     VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
-    VkShaderModule createShaderModule(const std::vector<char>& code);
 
+    VkShaderModule createShaderModule(const std::vector<char>& code);
     // static functions
     static void checkExtensions();
     static bool checkDeviceExtensionSupport(VkPhysicalDevice dev);
+
     static std::vector<const char*> getRequiredExtensions();
 
     static bool checkValidationLayerSupport();
@@ -167,8 +183,8 @@ private:
     static void framebufferResizeCallback(GLFWwindow* window, int width, int height);
 
     static void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
-
     static std::vector<char> readFile(const std::string& filename);
+
     static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
                                                         VkDebugUtilsMessageTypeFlagsEXT messageType,
                                                         const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
