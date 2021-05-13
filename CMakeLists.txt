@@ -16,16 +16,19 @@ find_package(Vulkan REQUIRED)
 target_include_directories(${PROJECT_NAME} PUBLIC
         src/
         vendor/glfw/include
+        vendor/stb
         )
 
 target_link_libraries(${PROJECT_NAME}
         Vulkan::Vulkan
         glfw ${GLFW_LIBRARIES}
         glm::glm
+
         )
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE
         GLM_FORCE_DEPTH_ZERO_TO_ONE
         GLM_FORCE_RADIANS
         GLFW_INCLUDE_VULKAN
+        STB_IMAGE_IMPLEMENTATION
         )

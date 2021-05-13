@@ -112,6 +112,13 @@ private:
     VkBuffer indexBuffer{};
     VkDeviceMemory indexBufferMemory{};
     VkDescriptorPool descriptorPool{};
+    VkImage textureImage{};
+    VkDeviceMemory textureImageMemory{};
+    VkImageView textureImageView{};
+    VkSampler textureSampler{};
+
+
+    VkImageView createImageView(VkImage image, VkFormat format);
 
     std::vector<VkDescriptorSet> descriptorSets{};
     std::vector<VkBuffer> uniformBuffers;
@@ -145,6 +152,14 @@ private:
     void createCommandPool();
     void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer&
     buffer, VkDeviceMemory& bufferMemory);
+    void createTextureImage();
+    void createTextureImageView();
+    void createImage(uint32_t width, uint32_t height, VkFormat format, VkImageTiling tiling,
+                     VkImageUsageFlags usage,
+                     VkMemoryPropertyFlags properties, VkImage& img,
+                     VkDeviceMemory& imageMemory);
+    void copyBufferToImage(VkBuffer buffer, VkImage image, uint32_t width, uint32_t height);
+    void transitionImageLayout(VkImage image, VkFormat format, VkImageLayout oldLayout, VkImageLayout newLayout);
     void createVertexBuffer();
     void createIndexBuffer();
     void createUniformBuffers();
@@ -166,8 +181,13 @@ private:
     void updateUniformBuffer(uint32_t currentImage);
     void drawFrame();
 
+    VkCommandBuffer beginSingleTimeCommands();
+    void endSingleTimeCommands(VkCommandBuffer commandBuffer);
+
     QueueFamilyIndices findQueueFamilies(VkPhysicalDevice dev);
     bool isDeviceSuitable(VkPhysicalDevice dev);
+
+    uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
 
     SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice dev);
     VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
@@ -194,4 +214,5 @@ private:
                                                         void* pUserData);
 
 
+    void createTextureSampler();
 };
