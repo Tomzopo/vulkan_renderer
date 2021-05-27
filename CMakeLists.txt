@@ -17,6 +17,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         src/
         vendor/glfw/include
         vendor/stb
+        vendor/tinyobjloader
         )
 
 target_link_libraries(${PROJECT_NAME}
@@ -29,6 +30,8 @@ target_link_libraries(${PROJECT_NAME}
 target_compile_definitions(${PROJECT_NAME} PRIVATE
         GLM_FORCE_DEPTH_ZERO_TO_ONE
         GLM_FORCE_RADIANS
+        GLM_ENABLE_EXPERIMENTAL
         GLFW_INCLUDE_VULKAN
         STB_IMAGE_IMPLEMENTATION
+        TINYOBJLOADER_IMPLEMENTATION
         )
