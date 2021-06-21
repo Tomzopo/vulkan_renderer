@@ -10,6 +10,8 @@ branch.
 * Mipmap Generation
 * Multisampling
 
+https://user-images.githubusercontent.com/19325582/122780370-1518f900-d2af-11eb-9e15-94b6ca62382b.mp4
+
 # Example Models & Textures:
 
 All the used models and textures aren't created by me. You can find the source and creator with the following links.
