@@ -2,12 +2,12 @@
 #include <stdexcept>
 #include <cstdlib>
 
-#include "HelloTriangleApplication.h"
+#include "VulkanRenderer.h"
 
 
 int main() {
 
-    HelloTriangleApplication app;
+    VulkanRenderer app;
 
     try {
         app.run();

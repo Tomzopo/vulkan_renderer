@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.19)
-project(vulkan_tutorial)
+project(vulkan_renderer)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -8,7 +8,7 @@ add_subdirectory(vendor/glm)
 
 add_executable(${PROJECT_NAME}
         src/main.cpp
-        src/HelloTriangleApplication.cpp
+        src/VulkanRenderer.cpp
         )
 
 find_package(Vulkan REQUIRED)
