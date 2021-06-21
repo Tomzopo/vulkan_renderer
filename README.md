@@ -1,11 +1,12 @@
 # Vulkan Renderer
 
 This is my implementation of a Vulkan Renderer. It's all in a monolithic structure for learning purposes. I'm working on
-an object-oriented version on the [oo-abstraction]() branch.
+an object-oriented version on the [oo-abstraction](https://github.com/Tomzopo/vulkan_renderer/tree/oo-abstraction)
+branch.
 
 # Todo:
 
-* [Object-Oriented Abstraction]()
+* [Object-Oriented Abstraction](https://github.com/Tomzopo/vulkan_renderer/tree/oo-abstraction)
 * Mipmap Generation
 * Multisampling
 
