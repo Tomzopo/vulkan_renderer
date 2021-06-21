@@ -8,6 +8,8 @@ Many thanks to [vulkan-tutorial.com](https://vulkan-tutorial.com/)
 
 ## Example Clips
 
+These are some clips taken of the my renderer for a few different models.
+
 https://user-images.githubusercontent.com/19325582/122780370-1518f900-d2af-11eb-9e15-94b6ca62382b.mp4
 
 https://user-images.githubusercontent.com/19325582/122784218-90c87500-d2b2-11eb-9fbc-4264e5e0870a.mp4
