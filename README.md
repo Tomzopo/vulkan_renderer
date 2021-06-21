@@ -2,9 +2,9 @@
 
 This is my implementation of a Vulkan Renderer. 
 
-It's all in a monolithic structure for learning purposes. 
+It's all in a monolithic structure due to the fact that Vulkan is a C API and it's easier for learning purposes. I will work on an absracted verison in the future when I'm more comfortable with the vulkan spec and concepts. 
 
-Many thanks to [vulkan-tutorial.com](https://vulkan-tutorial.com/)
+Many thanks to [vulkan-tutorial.com](https://vulkan-tutorial.com/).
 
 ## Example Clips
 
