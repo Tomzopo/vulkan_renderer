@@ -38,10 +38,10 @@ void VulkanContext::Create() {
     instanceCreateInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
     instanceCreateInfo.ppEnabledExtensionNames = extensions.data();
 
-    VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo;
+    VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo{};
     if (s_EnableValidationLayers) {
-        instanceCreateInfo.enabledLayerCount = static_cast<uint32_t>(m_DebugMessenger.getValidationLayers().size());
-        instanceCreateInfo.ppEnabledLayerNames = m_DebugMessenger.getValidationLayers().data();
+        instanceCreateInfo.enabledLayerCount = static_cast<uint32_t>(ValidationLayers.size());
+        instanceCreateInfo.ppEnabledLayerNames = ValidationLayers.data();
         VulkanDebugMessenger::populateDebugUtilsCreateInfo(debugCreateInfo);
         instanceCreateInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT*) &debugCreateInfo;
     } else {

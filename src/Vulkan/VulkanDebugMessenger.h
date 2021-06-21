@@ -7,6 +7,10 @@ static bool s_EnableValidationLayers = true;
 static bool s_EnableValidationLayers = false;
 #endif
 
+const std::vector<const char*> ValidationLayers = {
+        "VK_LAYER_KHRONOS_validation"
+};
+
 static VkResult CreateDebugUtilsMessengerEXT(VkInstance instance,
                                              const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo,
                                              const VkAllocationCallbacks* pAllocator,
@@ -47,10 +51,6 @@ private:
     VkDebugUtilsMessengerEXT m_DebugMessenger{};
 
 private:
-    const std::vector<const char*> m_ValidationLayers = {
-            "VK_LAYER_KHRONOS_validation"
-    };
-
     static const auto m_MessageSeverity =
             VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT |
             VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT |
@@ -62,7 +62,6 @@ private:
             VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
 
 public:
-    std::vector<const char*> getValidationLayers() { return m_ValidationLayers; }
     static auto getMessageSeverity() { return m_MessageSeverity; }
     static auto getMessageType() { return m_MessageType; }
 

@@ -35,7 +35,7 @@ bool VulkanDebugMessenger::checkValidationLayerSupport() {
     std::vector<VkLayerProperties> availableLayers(layerCount);
     vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
 
-    for (const char* layerName: m_ValidationLayers) {
+    for (const char* layerName: ValidationLayers) {
         bool layerFound = false;
 
         for (const auto& layerProperties : availableLayers) {
